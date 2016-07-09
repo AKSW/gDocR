@@ -1,6 +1,8 @@
 # gDocR
 A small configurable extension for Google Docs for encoding meta data user-friendly.
 
+Beta Version for testing:
+
 - open https://script.google.com
 - overwrite the existing code in the Code.gs file with the code offered here
 - create a new file by clicking File -> New -> HTML File, name it 'gDocR'
@@ -17,3 +19,5 @@ A small configurable extension for Google Docs for encoding meta data user-frien
   
   - with the first use, the add on will create a spreadsheet with a config in it: 'gDocR_configFile'. You can look for that in your Drive and manipulate the menu options in there. A little help is in there as well.
   
+Coming soon:
+publishing in Googles Drive Add-ons Shop.
