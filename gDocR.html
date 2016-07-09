@@ -1,0 +1,124 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<table>
+
+<?        
+
+try{
+    var configFileId = DriveApp.getFilesByName("gDocR_configFile").next().getId();
+}catch (e){
+    MailApp.sendEmail("mai12kyl@studserv.uni-leipzig.de", "[gDocR error] in getFilesByName(\"gDocR_configfile\")" , e.message);
+    ?>
+    <tr><td>no config File found. trying to create a new one (with standard aksw properties). Success.</td></tr>
+    <?
+    try{
+        var configFileId = createConfig();
+    }catch (e) {
+        MailApp.sendEmail("mai12kyl@studserv.uni-leipzig.de", "[gDocR error] in createConfig()" , e.message);
+    }
+}?>
+</table>
+<?
+
+var akswDocumentProperties = loadConfig(configFileId);
+
+//the system of this datatype is as follows: first the category, second a number 0 or 1, while 0 means its a free write textfield and 1 means its a dropdown, and, if it is a dropdown, third there is an array of values for it
+
+//get the saved Properties and Description of the document
+var id = DocumentApp.getActiveDocument().getId()
+var file = DriveApp.getFileById(id);
+var descriptionString = file.getDescription();
+
+if(descriptionString!==""){
+    try{
+        var description = JSON.parse(descriptionString);
+    } catch (e) {
+        ?>
+        no proper JSON Description loaded. If you klick the save button, description will be overwritten!
+        <?
+        MailApp.sendEmail("mai12kyl@studserv.uni-leipzig.de", "[gDocR error] in JSON.parse()" , e.message);
+    }
+}
+?>
+<script>
+//When the metadata has been successfully saved as document properties
+//  close the metadata form panel
+function onSave() { google.script.host.close(); }
+</script>
+
+<table>
+
+<div>
+<!-- save and cancel buttons. on save the function in Code.gs is running wich saves the manipulated values to the documents properties -->
+<tr><td></td><td>
+  <input
+    type="button"
+    value="Save & Close"
+    onclick="google.script.run.withSuccessHandler(onSave).processMetadataForm(document.getElementById('metadataForm'))"
+  />
+   
+  <input
+    type="button"
+    value="Cancel"
+    onclick="google.script.host.close()"
+  />
+  </td>
+</div>
+
+<tr></tr>
+<form id='metadataForm'>
+<!-- Construct a set of form elements, one for each metadata item -->
+<? 
+// iterate over the akswDocumentProperties JSON while i are the keys, and later j are the values
+var keys = [index for (index in akswDocumentProperties)];
+
+//for (var i=0; i < keys.length;i++){ ?><?= keys[i] ?><? }
+
+for (var i = 0; i < keys.length; i++) {
+    var key=keys[i];
+    ?>
+    <tr><div>
+    <td><?= key ?>:</td>
+    <td><? 
+    // if the properties are marked withe the numer 1, make a dropdown selection
+    if(isArray(akswDocumentProperties[key])){ 
+        var allValues = akswDocumentProperties[key]; ?>
+        <select name="<?= key ?>">
+        <option label=""></option>
+        <? 
+        for (var j = 0; j<allValues.length; j++){
+            var label=allValues[j] ?>
+            <option <? if(description){ if(description[key]===label){ ?> selected <? } }?>
+            label="<?= label ?>" ><?= label ?> 
+            </option><? 
+        } 
+        ?></select><? 
+    } 
+    //if the property is marked with 0, it should be handled as a textfield
+    if(!isArray(akswDocumentProperties[key])){ 
+        ?>
+        <input type="text"
+        name = "<?= key ?>"
+        <? if(description){ ?> value= "<?= description[key] ?>" <?
+        } else { ?> value = "" <? } ?>
+        /><? 
+    } 
+    ?></td></div><? 
+} 
+?></tr></form>
+
+<div>
+<!-- save and cancel buttons. on save the function in code.gs is running wich saves the manipulated values to the documents properties -->
+<tr><td></td><td>
+  <input
+    type="button"
+    value="Save & Close"
+    onclick="google.script.run.withSuccessHandler(onSave).processMetadataForm(document.getElementById('metadataForm'))"
+  />
+   
+  <input
+    type="button"
+    value="Cancel"
+    onclick="google.script.host.close()"
+  />
+  </td>
+</div>
