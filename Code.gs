@@ -9,7 +9,7 @@ function metadataView() {
   //Pop up a panel and render the HTML describing the metadata form inside it
   DocumentApp.getUi().showModalDialog(html, 'Properties Data:');
 }
- 
+
 //This function sets the document properties from the metadata form elements
 function processMetadataForm(theForm) {
   var props=PropertiesService.getDocumentProperties()
