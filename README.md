@@ -3,9 +3,10 @@ A small configurable extension for Google Docs for encoding meta data user-frien
 
 Beta Version for testing:
 
-- open https://script.google.com
+- open https://script.google.com , click "Start Scripting" and log in with your Google Account if asked
 - overwrite the existing code in the Code.gs file with the code offered here
 - create a new file by clicking File -> New -> HTML File, name it 'gDocR'
+- overwrite the existing code in the HTML file with the code offered here
 - go to Ressources -> Advanced Google Services and in the opening dialog activate 'Drive API', 'v2', click OK
 - save all by pressing CTRL + SHIFT + S (or File -> save all)
 - go to File -> Version Control and save as new Version
@@ -15,6 +16,7 @@ Beta Version for testing:
   - select this test with the radio button and click 'Test'
     
     - the opening Document offers you now a menupoint 'Add-Ons', click it, select 'aksw_gDocR' and 'Metadata'
+    - Allow the App to manage your google docs
     - now you can select or write Properties into the Menu and save or cancel it.
   
   - with the first use, the add on will create a spreadsheet with a config in it: 'gDocR_configFile'. You can look for that in your Drive and manipulate the menu options in there. A little help is in there as well.
