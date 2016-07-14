@@ -21,8 +21,6 @@ try{
 
 var akswDocumentProperties = loadConfig(configFileId);
 
-//the system of this datatype is as follows: first the category, second a number 0 or 1, while 0 means its a free write textfield and 1 means its a dropdown, and, if it is a dropdown, third there is an array of values for it
-
 //get the saved Properties and Description of the document
 var id = DocumentApp.getActiveDocument().getId()
 var file = DriveApp.getFileById(id);
